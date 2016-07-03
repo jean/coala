@@ -130,3 +130,20 @@ class DocumentationComment:
                 parsed.append(self.Description(desc=desc))
 
         return parsed
+
+    @classmethod
+    def assemble_documentation(cls, doccomment, param, ret):
+        assembled_doc = ""
+        for section in doccomment:
+            section_desc = section.desc.splitlines(keepends=True)
+            if isinstance(section, cls.Description):
+                assembled_doc += section_desc[0]
+            elif isinstance(section, cls.Parameter):
+                assembled_doc += (param[0] + section.name + param[1] +
+                                  section_desc[0])
+            elif isinstance(section, cls.ReturnValue):
+                assembled_doc += ret + section_desc[0]
+            for desc in section_desc[1:]:
+                if desc != "":
+                    assembled_doc += desc
+        return assembled_doc

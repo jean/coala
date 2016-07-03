@@ -133,6 +133,19 @@ class PythonDocumentationCommentTest(DocumentationCommentTest):
 
         self.assertEqual(parsed_docs, expected)
 
+        original = [doc.documentation for doc in
+                    extract_documentation(data, "python", "default")]
+
+        param = ":param ", ":"
+        ret = ":return: "
+
+        assembled = []
+        for doc in parsed_docs:
+            assembled.append(DocumentationComment.assemble_documentation(
+                             doc, param, ret))
+
+        self.assertEqual(assembled, original)
+
     def test_python_doxygen(self):
         data = self.load_testdata("doxygen.py")
 
